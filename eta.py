@@ -1,6 +1,7 @@
 import re
 from datetime import datetime, timedelta
 from icalendar import Calendar, Event
+import subprocess
 
 def extract_etas(text):
     pattern = r"Best Case Estimate: (\d{4}-\d{2}-\d{2})\nMost Likely Estimate: (\d{4}-\d{2}-\d{2})\nWorst Case Estimate: (\d{4}-\d{2}-\d{2})"
@@ -28,6 +29,7 @@ def create_calendar_event(etas, ticket_id):
         f.write(cal.to_ical())
 
     print("Reminder events created.")
+    return True
 
 eta_text = []
 print("Enter the ETA text (press Enter on an empty line to finish):")
@@ -42,7 +44,7 @@ eta_text = '\n'.join(eta_text)
 etas = extract_etas(eta_text)
 if etas:
     ticket_id = input("Enter the Ticket ID: ")
-    create_calendar_event(etas, ticket_id)
+    if create_calendar_event(etas, ticket_id):
+        subprocess.call(['xdg-open', 'eta_reminder.ics'])
 else:
     print("ETAs not found in the text.")
-
