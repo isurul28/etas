@@ -22,7 +22,7 @@ Steps :
 
    Ticket ID: test-001
 
-6. Now check your Ubuntu Calendar app. The reminders will be added
+6. Now check the directory where the script is located. There will be a file created as "eta_reminder.ics". Doubble-click the file and it will get imported to the Ubuntu calendar app.
 
     
 
