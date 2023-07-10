@@ -22,8 +22,8 @@ Steps :
 
    Ticket ID: test-001
 
-6. Now check the directory where the script is located. There will be a file created as "eta_reminder.ics". Doubble-click the file and it will get imported to the Ubuntu calendar app.
-
+6. Now a pop window will appear to import the events to Ubuntu calendar app
+   
     
 
 
