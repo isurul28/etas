@@ -1,6 +1,6 @@
 import re
 from datetime import datetime, timedelta
-from icalendar import Calendar, Event
+from icalendar import Calendar, Event, Alarm
 import subprocess
 
 def extract_etas(text):
@@ -16,13 +16,22 @@ def create_calendar_event(etas, ticket_id):
     cal.add('prodid', '-//ETAs Reminder//')
     cal.add('version', '2.0')
 
-    for eta in etas:
+    estimates = ['Best Case', 'Most Likely', 'Worst Case']
+
+    for i, eta in enumerate(etas):
         event = Event()
-        event.add('summary', ticket_id)
+        estimate_description = f'{ticket_id} - {estimates[i]}'
+        event.add('summary', estimate_description)
         event.add('description', 'Estimated Time of Arrival')
         event.add('dtstart', datetime.strptime(eta, '%Y-%m-%d'))
         event.add('dtend', datetime.strptime(eta, '%Y-%m-%d') + timedelta(days=1))
 
+        alarm = Alarm()
+        alarm.add('action', 'DISPLAY')
+        alarm.add('description', 'Reminder')
+        alarm.add('trigger', timedelta(minutes=-10))  # Set the trigger 10 minutes before the event
+
+        event.add_component(alarm)
         cal.add_component(event)
 
     with open('eta_reminder.ics', 'wb') as f:
